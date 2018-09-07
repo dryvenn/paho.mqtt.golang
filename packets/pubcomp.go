@@ -22,7 +22,7 @@ func (pc *PubcompPacket) String() string {
 func (pc *PubcompPacket) Write(w io.Writer) error {
 	var err error
 	pc.FixedHeader.RemainingLength = 2
-	packet := pc.FixedHeader.pack()
+	packet := pc.FixedHeader.Pack()
 	packet.Write(encodeUint16(pc.MessageID))
 	_, err = packet.WriteTo(w)
 

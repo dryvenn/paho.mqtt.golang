@@ -55,7 +55,7 @@ func (c *ConnectPacket) Write(w io.Writer) error {
 		body.Write(encodeBytes(c.Password))
 	}
 	c.FixedHeader.RemainingLength = body.Len()
-	packet := c.FixedHeader.pack()
+	packet := c.FixedHeader.Pack()
 	packet.Write(body.Bytes())
 	_, err = packet.WriteTo(w)
 

@@ -234,7 +234,8 @@ func boolToByte(b bool) byte {
 	}
 }
 
-func (fh *FixedHeader) pack() bytes.Buffer {
+// Pack converts the FixedHeader to its byte format
+func (fh *FixedHeader) Pack() bytes.Buffer {
 	var header bytes.Buffer
 	header.WriteByte(fh.MessageType<<4 | boolToByte(fh.Dup)<<3 | fh.Qos<<1 | boolToByte(fh.Retain))
 	header.Write(encodeLength(fh.RemainingLength))
@@ -243,7 +244,7 @@ func (fh *FixedHeader) pack() bytes.Buffer {
 
 // Unpack populates the FixedHeader's fields according to the given byte, which
 // should be the first byte of a control packet, and the given io.Reader, which
-// should yield the rest of the packet.
+// should yield the rest of the header.
 func (fh *FixedHeader) Unpack(typeAndFlags byte, r io.Reader) {
 	fh.MessageType = typeAndFlags >> 4
 	fh.Dup = (typeAndFlags>>3)&0x01 > 0

@@ -17,7 +17,7 @@ func (d *DisconnectPacket) String() string {
 }
 
 func (d *DisconnectPacket) Write(w io.Writer) error {
-	packet := d.FixedHeader.pack()
+	packet := d.FixedHeader.Pack()
 	_, err := packet.WriteTo(w)
 
 	return err
