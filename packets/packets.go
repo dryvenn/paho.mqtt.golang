@@ -106,7 +106,7 @@ func ReadPacket(r io.Reader) (cp ControlPacket, err error) {
 	if err != nil {
 		return nil, err
 	}
-	fh.unpack(b[0], r)
+	fh.Unpack(b[0], r)
 	cp = NewControlPacketWithHeader(fh)
 	if cp == nil {
 		return nil, errors.New("Bad data from client")
@@ -241,7 +241,10 @@ func (fh *FixedHeader) pack() bytes.Buffer {
 	return header
 }
 
-func (fh *FixedHeader) unpack(typeAndFlags byte, r io.Reader) {
+// Unpack populates the FixedHeader's fields according to the given byte, which
+// should be the first byte of a control packet, and the given io.Reader, which
+// should yield the rest of the packet.
+func (fh *FixedHeader) Unpack(typeAndFlags byte, r io.Reader) {
 	fh.MessageType = typeAndFlags >> 4
 	fh.Dup = (typeAndFlags>>3)&0x01 > 0
 	fh.Qos = (typeAndFlags >> 1) & 0x03
